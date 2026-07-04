@@ -6,5 +6,5 @@ export interface Persona {
   id: PersonaId;
   name: string;
   tagline: string;
-  image: string | Blob;
+  image: string | StaticImageData;
 }
