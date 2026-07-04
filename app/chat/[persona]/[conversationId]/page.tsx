@@ -28,7 +28,7 @@ export default async function ConversationPage({ params }: Props) {
   }
 
   return (
-    <main className="flex min-h-screen flex-col overflow-hidden bg-zinc-950 text-white md:flex-row">
+    <main className="flex h-screen flex-col overflow-hidden bg-zinc-950 text-white md:flex-row">
       <Sidebar
         selectedPersona={selectedPersona.id}
         selectedConversationId={selectedConversation.id}

@@ -25,7 +25,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   }
 
   return (
-    <footer className="border-t border-zinc-800 bg-zinc-950 px-4 py-5 sm:px-6">
+    <footer className="shrink-0 border-t border-zinc-800 bg-zinc-950 px-4 py-5 sm:px-6">
       <form
         onSubmit={handleSubmit}
         className="mx-auto flex w-full max-w-4xl flex-col gap-3 sm:flex-row sm:items-end"

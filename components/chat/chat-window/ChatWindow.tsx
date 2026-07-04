@@ -7,6 +7,7 @@ import EmptyState from "@/components/chat/chat-window/EmptyState";
 import ChatInput from "@/components/chat/chat-window/ChatInput";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Persona } from "@/types/persona";
+import {MessageContent} from "@/components/chat/chat-window/MessageContent";
 
 interface Message {
   id: string;
@@ -207,12 +208,12 @@ export default function ChatWindow({
   const shouldShowChat = Boolean(conversationId);
 
   return (
-    <section className="flex min-h-0 flex-1 flex-col bg-zinc-950">
+    <section className="flex min-h-0 flex-1 flex-col overflow-hidden bg-zinc-950">
       <ChatHeader persona={persona} />
 
       <main
         ref={scrollContainerRef}
-        className="flex flex-1 flex-col overflow-y-auto px-6 py-6"
+        className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 py-6"
       >
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-4">
           {!shouldShowChat ? (
@@ -247,13 +248,13 @@ export default function ChatWindow({
                         </div>
                       )}
                       <div
-                        className={`max-w-[75%] whitespace-pre-wrap break-words rounded-3xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
+                        className={`max-w-[75%] whitespace-pre-wrap wrap-break-word rounded-3xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
                           isUser
                             ? "rounded-br-md bg-blue-600 text-white"
                             : "rounded-bl-md border border-zinc-800 bg-zinc-900 text-zinc-100"
                         }`}
                       >
-                        {message.content}
+                         <MessageContent content={message.content} isUser={isUser} />
                       </div>
                     </div>
                     <span

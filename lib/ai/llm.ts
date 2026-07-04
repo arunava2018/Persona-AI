@@ -39,9 +39,9 @@ export async function generateResponse(
             },
         });
 
-        console.log("Finish Reason:", response.candidates?.[0]?.finishReason);
-        console.log("Usage:", response.usageMetadata);
-        console.log("Candidate:", JSON.stringify(response.candidates?.[0], null, 2));
+        // console.log("Finish Reason:", response.candidates?.[0]?.finishReason);
+        // console.log("Usage:", response.usageMetadata);
+        // console.log("Candidate:", JSON.stringify(response.candidates?.[0], null, 2));
 
         return {
             content: response.text ?? "",
