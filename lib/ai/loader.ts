@@ -14,7 +14,6 @@ export function loadPersonaAssets(persona: string): PersonaAssets {
 
   const basePath = path.join(
     process.cwd(),
-    "src",
     "lib",
     "ai",
     "personas",

@@ -22,3 +22,14 @@ export async function getPersonaBySlug(slug: string) {
 
   return data;
 }
+
+export async function getPersonaById(id: string) {
+  const { data, error } = await supabase
+    .from("personas")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) throw error;
+
+  return data;
+}

@@ -43,19 +43,19 @@ export async function getConversationsByPersona(persona: string) {
   return data;
 }
 
-export async function getConversation(
-  conversationId: string
-) {
-  const { data, error } = await supabase
-    .from("conversations")
-    .select("*")
-    .eq("id", conversationId)
-    .single();
+  export async function getConversation(
+    conversationId: string
+  ) {
+    const { data, error } = await supabase
+      .from("conversations")
+      .select("*")
+      .eq("id", conversationId)
+      .single();
 
-  if (error) throw error;
-
-  return data;
-}
+    if (error) throw error;
+    
+    return data;
+  }
 
 export async function updateConversationTitle(
   conversationId: string,
