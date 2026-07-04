@@ -1,15 +1,17 @@
 import fs from "fs";
 import path from "path";
 
-export interface PersonaAssets {
-  persona: any;
-  fewshots: any;
-}
+import { PersonaAssets } from "./types";
+
 const cache = new Map<string, PersonaAssets>();
+
 export function loadPersonaAssets(persona: string): PersonaAssets {
-   if (cache.has(persona)) {
-    return cache.get(persona)!;
+  // Return cached assets if already loaded
+  const cached = cache.get(persona);
+  if (cached) {
+    return cached;
   }
+
   const basePath = path.join(
     process.cwd(),
     "src",
@@ -23,13 +25,14 @@ export function loadPersonaAssets(persona: string): PersonaAssets {
   const fewshotsPath = path.join(basePath, `${persona}.fewshots.json`);
 
   const personaData = JSON.parse(
-    fs.readFileSync(personaPath, "utf-8")
+    fs.readFileSync(personaPath, "utf8")
   );
 
   const fewshotsData = JSON.parse(
-    fs.readFileSync(fewshotsPath, "utf-8")
+    fs.readFileSync(fewshotsPath, "utf8")
   );
-  const assets = {
+
+  const assets: PersonaAssets = {
     persona: personaData,
     fewshots: fewshotsData,
   };
