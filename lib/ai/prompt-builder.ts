@@ -22,7 +22,8 @@ export function buildMessages({
     content: buildSystemPrompt(assets.persona),
   });
 
-  const fewShots = assets.fewshots.few_shots.slice(0, 10);
+  const fewShots = assets.fewshots.few_shots.slice(0,10);
+  // console.log("Fewshots:", fewShots);
 
   for (const shot of fewShots) {
     messages.push({
