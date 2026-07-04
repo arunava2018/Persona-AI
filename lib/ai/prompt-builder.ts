@@ -22,7 +22,7 @@ export function buildMessages({
     content: buildSystemPrompt(assets.persona),
   });
 
-  const fewShots = assets.fewshots.few_shots.slice(0, 4);
+  const fewShots = assets.fewshots.few_shots.slice(0, 10);
 
   for (const shot of fewShots) {
     messages.push({

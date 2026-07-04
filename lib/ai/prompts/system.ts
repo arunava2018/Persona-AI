@@ -3,8 +3,10 @@ import { PersonaData } from "../types";
 export function buildSystemPrompt(persona: PersonaData): string {
   const sections: string[] = [];
 
+  // console.log("Perspna Data:", persona);
   // Main Persona Prompt
   sections.push(persona.system_prompt.trim());
+
 
   // Runtime Guidelines
   if (
