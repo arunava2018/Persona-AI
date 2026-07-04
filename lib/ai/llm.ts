@@ -1,59 +1,40 @@
-import { GoogleGenAI } from "@google/genai";
+import Groq from "groq-sdk";
 import dotenv from "dotenv";
 import { LLMMessage, LLMResponse } from "./types";
 
 dotenv.config();
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY!,
+
+const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY!,
 });
 
-const MODEL = "gemini-2.5-flash";
+const MODEL = "llama-3.3-70b-versatile";
 
 export async function generateResponse(
     messages: LLMMessage[]
 ): Promise<LLMResponse> {
     try {
-        // Extract system prompt
-        const systemPrompt =
-            messages.find((m) => m.role === "system")?.content ?? "";
-
-        // Convert remaining messages
-        const contents = messages
-            .filter((m) => m.role !== "system")
-            .map((message) => ({
-                role: message.role === "assistant" ? "model" : "user",
-                parts: [{ text: message.content }],
-            }));
-
-        const response = await ai.models.generateContent({
+        const response = await groq.chat.completions.create({
             model: MODEL,
-            contents,
-            config: {
-                systemInstruction: systemPrompt,
-                temperature: 0.7,
-                topP: 0.95,
-                maxOutputTokens: 2024,
-                thinkingConfig: {
-                    thinkingBudget: 0,
-                },
-            },
+            messages: messages.map((message) => ({
+                role: message.role,
+                content: message.content,
+            })),
+            temperature: 0.7,
+            top_p: 0.95,
+            max_completion_tokens: 2024,
         });
 
-        // console.log("Finish Reason:", response.candidates?.[0]?.finishReason);
-        // console.log("Usage:", response.usageMetadata);
-        // console.log("Candidate:", JSON.stringify(response.candidates?.[0], null, 2));
-
         return {
-            content: response.text ?? "",
+            content: response.choices[0]?.message?.content ?? "",
             usage: {
-                promptTokens: response.usageMetadata?.promptTokenCount,
-                completionTokens: response.usageMetadata?.candidatesTokenCount,
-                totalTokens: response.usageMetadata?.totalTokenCount,
+                promptTokens: response.usage?.prompt_tokens,
+                completionTokens: response.usage?.completion_tokens,
+                totalTokens: response.usage?.total_tokens,
             },
         };
     } catch (error) {
-        console.error("Gemini Error:", error);
-
+        console.error("Groq Error:", error);
         throw new Error("Failed to generate AI response.");
     }
 }
