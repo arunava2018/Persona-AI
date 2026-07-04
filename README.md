@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Persona AI
 
-## Getting Started
+Persona AI is a Next.js application that lets users chat with AI personas inspired by real people. The app combines a polished landing experience, persona-based chat interfaces, Supabase-backed conversation storage, and Groq-powered language generation.
 
-First, run the development server:
+## What this project does
+
+- Presents a landing page with featured personas
+- Lets users open persona-specific chat sessions
+- Stores conversations and messages in Supabase
+- Uses persona assets and few-shot examples to steer the assistant personality
+- Supports conversation creation, listing, fetching, and deletion through Next.js API routes
+
+## Tech stack
+
+- Frontend: Next.js 16, React 19, TypeScript
+- Styling: Tailwind CSS, shadcn/ui, Framer Motion
+- Backend/API: Next.js App Router route handlers
+- Database: Supabase
+- AI model: Groq via the Groq SDK
+- Additional libraries: AI SDK, React Markdown, Lucide Icons
+
+## Project structure
+
+```text
+persona-ai/
+  app/                  # Next.js app router pages and API routes
+    api/                # Conversation, persona, and message endpoints
+    chat/               # Persona chat pages
+  components/           # Reusable UI components
+  lib/                  # Shared app logic
+    ai/                 # Persona loading, prompt building, and LLM calls
+    supabase/           # Supabase client and query helpers
+  public/               # Static assets
+  transcript-generator/ # Optional pipeline for generating persona data from transcripts
+```
+
+## Core user flow
+
+1. A user visits the landing page and chooses a persona.
+2. The app creates a new conversation for that persona.
+3. Each message is sent to a Next.js API route.
+4. The server loads the selected persona assets and few-shot examples.
+5. A system prompt and chat history are built for the LLM.
+6. Groq generates the assistant reply.
+7. Both user and assistant messages are persisted to Supabase.
+
+## API routes
+
+### Persona routes
+
+- GET /api/personas
+  - Returns the list of available personas from Supabase.
+
+### Conversation routes
+
+- POST /api/conversations
+  - Creates a new conversation for a persona.
+- GET /api/conversations?persona=slug
+  - Fetches all conversations for a given persona.
+- DELETE /api/conversations
+  - Deletes a conversation and its related messages.
+
+### Message routes
+
+- POST /api/conversations/[conversationsId]/messages
+  - Saves a user message, builds prompt context, calls the LLM, and stores the assistant reply.
+- GET /api/conversations/[conversationsId]/messages
+  - Retrieves the full message history for a conversation.
+
+## AI behavior
+
+The assistant personality is shaped by persona-specific assets stored in:
+
+- lib/ai/personas/[persona]/[persona].persona.json
+- lib/ai/personas/[persona]/[persona].fewshots.json
+
+The prompt builder combines:
+
+- a system prompt derived from the persona profile
+- a small set of few-shot examples
+- the active conversation history
+
+## Environment variables
+
+Create a local environment file before running the app.
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+GROQ_API_KEY=your_groq_api_key
+```
+
+These values are required for:
+
+- Supabase database access
+- LLM inference through Groq
+
+## Prerequisites
+
+- Node.js 20+ recommended
+- npm
+- Access to a Supabase project
+- A Groq API key
+
+## Running locally
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open the app in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Production build
 
-## Learn More
+To verify the app builds successfully:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To start the production build locally:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run start
+```
