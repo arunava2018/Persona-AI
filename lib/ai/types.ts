@@ -24,3 +24,8 @@ export interface PersonaAssets {
   persona: PersonaData;
   fewshots: FewShotCollection;
 }
+
+export interface LLMMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
