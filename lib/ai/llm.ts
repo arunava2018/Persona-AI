@@ -8,7 +8,7 @@ const client = new OpenAI({
   apiKey: process.env.OPENROUTER_API_KEY!,
   baseURL: "https://openrouter.ai/api/v1",
   defaultHeaders: {
-    "HTTP-Referer": "https://your-domain.com", // optional
+    "HTTP-Referer": "https://persona-ai-henna.vercel.app/", // optional
     "X-Title": "Persona AI", // optional
   },
 });
