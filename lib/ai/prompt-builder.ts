@@ -22,9 +22,12 @@ export function buildMessages({
     content: buildSystemPrompt(assets.persona),
   });
 
-  const fewShots = assets.fewshots.few_shots.slice(0,10);
+  const fewShots = assets.fewshots.few_shots;
   // console.log("Fewshots:", fewShots);
-
+  messages.push({
+    role: "system",
+    content: "-------Here are some fewshots Examples-------",
+  });
   for (const shot of fewShots) {
     messages.push({
       role: "user",
